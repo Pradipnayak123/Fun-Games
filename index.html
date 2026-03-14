@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Toc_toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body> 
+    <div class="msg-container hide">
+        <p id="msg">Winner</p>
+    </div>
+    <main>
+        <h1>Tic-Tac-Toe</h1>
+        
+        <button class="new-btn">New-Game</button>
+        <div class="container">
+        <div class="game">
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+        </div>
+    </div>
+    <button class="reset-btn">Reset</button>
+</main>
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+}
+body{
+    background-color: skyblue;
+    text-align: center;
+}
+.container{
+    height: 70vh;
+     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+}
+.game{
+    height: 60vmin;
+    width: 60vmin;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5vmin;
+}
+.box{
+    height: 18vmin;
+    width: 18vmin;
+    border-radius: 1rem;
+    border: none;
+    box-lines: 0 0 1rem rgba(0,0,0,0.1);
+    font-size: 9vmin;
+    color: rgb(95, 115, 45);
+    background-color: white;
+}
+
+.reset-btn{
+    padding: 1rem;
+    font-size: 1.25rem;
+    background-color: rgb(11, 40, 79);
+    color: white;
+    border-radius: 1rem;
+    border: none;
+}
+.new-btn{
+     padding: 1rem;
+    font-size: 1.25rem;
+    background-color: rgb(11, 40, 79);
+    color: white;
+    border-radius: 1rem;
+    border: none;
+}
+#msg{
+    color: yellow;
+    font-size: 8vmin;
+}
+.msg-container{
+    color: white;
+    height: 100vmin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5rem;
+
+}
+.hide{
+    display: none;
+}
+
+</style>
+<script>
+    let boxes = document.querySelectorAll(".box");
+let resetBtn = document.querySelector(".reset-btn");
+let newBtn = document.querySelector(".new-btn");
+let msgContainer = document.querySelector(".msg-container");
+let msg = document.querySelector("#msg");
+
+
+//Playar-O and Player-X
+let turn = true;
+const winPatterns = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
+
+];
+//messege box---------------
+const resetGame = () => {
+turn = true;
+enableBoxes();
+msgContainer.classList.add("hide");
+
+}
+boxes.forEach((box) => {
+    box.addEventListener("click",()=>{
+        console.log("The Box Was Clicked");
+        if(turn){
+            box.innerText = "O";
+            turn = false;
+        }
+        else{
+            box.innerText = "X";
+            turn = true;
+        }
+        box.disabled = true;
+        checkWinner();
+    });
+});
+const disableBoxes = ()=>{
+    for(let box of boxes){
+        box.disabled = true;
+    }
+}
+const enableBoxes = ()=>{
+    for(let box of boxes){
+        box.disabled = false;
+        box.innerText = "";
+    }
+}
+
+const showWinner = (winner) => {
+    msg.innerText = `Congratulations, Winner is ${winner}`;
+    msgContainer.classList.remove("hide");
+    disableBoxes();
+}
+
+const checkWinner = () => {
+     for(let pateern of winPatterns){
+        // console.log(pateern[0],pateern[1],pateern[2]);
+        let pos1Val = boxes[pateern[0]].innerText;
+        let pos2Val = boxes[pateern[1]].innerText;
+        let pos3Val = boxes[pateern[2]].innerText;
+    if(pos1Val != "" && pos2Val != "" && pos3Val !=""){
+        if(pos1Val === pos2Val && pos2Val === pos3Val){
+            console.log("Winner",pos1Val);
+
+            showWinner(pos1Val);
+        }
+    }
+
+     };
+}
+
+
+newBtn.addEventListener("click",resetGame);
+resetBtn.addEventListener("click",resetGame);
+</script>
+</body>
+</html>
